@@ -30,11 +30,12 @@ class AlbumController extends AbstractActionController
     public function addAction()
     {
         $request = $this->getRequest();
-        $data = array('title' => $request->getPost('title'),
-            'artist' => $request->getPost('artist'));
+        $data = array(
+            'title' => $request->getPost('title'),
+            'artist' => $request->getPost('artist')
+        );
 
         $album = new Album();
-
 
         if ($request->isPost()) {
             $album->exchangeArray($data);
@@ -49,7 +50,7 @@ class AlbumController extends AbstractActionController
     public function editAction()
     {
         $request = $this->getRequest();
-        $id = (int)$this->params()->fromRoute('id');
+        $id = (int) $this->params()->fromRoute('id');
         $album = $this->getAlbumTable()->getAlbum($id);
         if ($request->isPost()) {
             $array = array(
@@ -64,10 +65,9 @@ class AlbumController extends AbstractActionController
         return new ViewModel(array('id' => $id));
     }
 
-
     public function deleteAction()
     {
-        $id = (int)$this->params()->fromRoute('id', 0);
+        $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('album');
         }
@@ -77,7 +77,7 @@ class AlbumController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $id = (int)$request->getPost('id');
+                $id = (int) $request->getPost('id');
                 $this->getAlbumTable()->deleteAlbum($id);
             }
 
@@ -89,7 +89,6 @@ class AlbumController extends AbstractActionController
             'id' => $id,
             'album' => $this->getAlbumTable()->getAlbum($id)
         );
-
     }
 
     /**
@@ -108,20 +107,17 @@ class AlbumController extends AbstractActionController
             )
         );
 
-
-
         $dataArray = array();
         $albums = $this->getAlbumTable()->fetchAll();
         foreach ($albums as $album) {
-            $dataArray[] = [$album->id,
+            $dataArray[] = [
+                $album->id,
                 $album->title,
                 $album->artist
             ];
         }
 
         $data = array_merge($titulos, $dataArray);
-
-
 
         $doc = new \PHPExcel();
 
@@ -138,7 +134,6 @@ class AlbumController extends AbstractActionController
 
         $objWriter->save('php://output');
 
+        //Comentario de prueba
     }
-
 }
-
